@@ -2,15 +2,16 @@ library(rvest)
 library(dplyr)
 library(openxlsx)
 library(purrr)
+library(httr)  # Sicherstellen, dass httr auch geladen ist
 
 # Hilfsfunktion zur Extraktion der Basis-URL
 extract_base_url <- function(url) {
-  domain_info <- httr::parse_url(url)
+  domain_info <- parse_url(url)
   paste0(domain_info$scheme, "://", domain_info$hostname)
 }
 
 # Funktion zum rekursiven Extrahieren von Text und Links von einer URL
-extract_text_recursively <- function(url, base_url, depth = 1) {
+extract_text_recursively <- function(url, base_url, depth = 2, max_links = 10) {
   if (depth == 0) return(list(text = "", links = character()))
   
   Sys.sleep(0.2)  # Kurze Pause
@@ -42,12 +43,27 @@ extract_text_recursively <- function(url, base_url, depth = 1) {
     return(character())
   })
   
+  links <- na.omit(links)
+  links <- unique(links)
   links <- links[grep("^https?://", links)]
-  links <- map_chr(links, ~ifelse(startsWith(.x, "http"), .x, url_absolute(.x, url)))
+  links <- map_chr(links, ~ifelse(startsWith(.x, base_url), .x, url_absolute(.x, url)))
   links <- links[grepl(base_url, links)]  # Filtere Links, die zur gleichen Basis-URL gehören
   
+  # Beschränke die Anzahl der zu verfolgenden Links
+  if (length(links) > max_links) {
+    set.seed(123)  # Für Reproduzierbarkeit
+    links <- sample(links, max_links)
+  }
+  
+  # Rekursive Verarbeitung von Links
+  recursive_data <- if (depth > 1) {
+    map_df(links, ~extract_text_recursively(.x, base_url, depth - 1, max_links))
+  } else {
+    data.frame(text = character(), links = character())
+  }
+  
   # Zusammenführen der Texte
-  full_text <- paste(main_text, collapse = " ")
+  full_text <- paste(main_text, recursive_data$text, collapse = " ")
   return(list(text = full_text, links = links))
 }
 
@@ -155,7 +171,7 @@ results <- data.frame(Firma = character(), Keyword = character(), Präsenz = log
 # Durchlaufe jede URL und überprüfe das Vorhandensein von Keywords
 for (url in urls) {
   base_url <- extract_base_url(url)  # Basis-URL extrahieren
-  data <- extract_text_recursively(url, base_url, depth = 1)  # Tiefe der Rekursion definieren
+  data <- extract_text_recursively(url, base_url, depth = 2, max_links = 10)  # Tiefe der Rekursion und maximale Links definieren
   for (keyword in keywords) {
     presence <- grepl(keyword, data$text, ignore.case = TRUE)  # Überprüfe das Vorhandensein des Keywords im Text
     results <- rbind(results, data.frame(Firma = url, Keyword = keyword, Präsenz = presence))
