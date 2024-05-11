@@ -5,9 +5,9 @@ account: nicofrancesco
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 11945108
-bundleId: 8603818
+bundleId: 8603838
 url: https://nicofrancesco.shinyapps.io/Capstone-HeadhunterScrape/
 version: 1
 asMultiple: FALSE
 asStatic: FALSE
-ignoredFiles: .RData|Data_RAW_URL/URL-List.R|Keyword_Results.xlsx|Output/Keyword_Analysis_Rekursiv.xlsx|Output/Keyword_Analysis.xlsx|Plots/2CompanysPlot.jpeg|Plots/Final Plot.jpeg|Plots/Plot-Seven Companys.pdf|README.md|Results.xlsx|Shiny/app.R|Shiny/app2.R|Junk|Scripts
+ignoredFiles: .RData|Data_RAW_URL/URL-List.R|Output/Keyword_Analysis_Rekursiv.xlsx|Output/Keyword_Analysis.xlsx|Plots/2CompanysPlot.jpeg|Plots/Final Plot.jpeg|Plots/Plot-Seven Companys.pdf|README.md|Results.xlsx|Shiny/app.R|Shiny/app2.R|Junk|Scripts
