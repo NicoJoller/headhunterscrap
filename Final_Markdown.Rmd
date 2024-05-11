@@ -1,0 +1,112 @@
+---
+title: "Web Scraping and Data Extraction"
+author: "Nico Joller"
+output: html_document
+---
+
+## Introduction
+
+This document outlines the process of scraping websites to extract text and links using R. We utilize several packages (`rvest`, `dplyr`, `openxlsx`, `purrr`, `httr`, and `parallel`) to perform recursive scraping and data processing.
+
+## Methodology
+
+The script is designed to extract data from a predefined list of URLs. It searches for specific keywords within the text of each webpage and collects snippets of text surrounding these keywords.
+
+### Packages
+
+Load necessary libraries:
+
+```{r setup, include=TRUE}
+library(rvest)
+library(dplyr)
+library(openxlsx)
+library(purrr)
+library(httr)
+library(parallel)
+```
+
+### Helper Functions
+Define a function to extract the base URL from a given URL:
+```{r}
+extract_base_url <- function(url) {
+  domain_info <- httr::parse_url(url)
+  paste0(domain_info$scheme, "://", domain_info$hostname)
+}
+```
+
+### Main Scraping Function
+Create a function to recursively extract text and links from URLs:
+```{r}
+extract_text_recursively <- function(url, depth = 2, max_links = 10) {
+  base_url <- extract_base_url(url)
+  
+  if (depth == 0) return(data.frame(URL = url, Keyword = NA, TextSnippet = NA))
+  
+  Sys.sleep(runif(1, 0.1, 0.5))
+  webpage <- tryCatch({
+    read_html(url)
+  }, error = function(e) {
+    message("Error opening page ", url, ": ", conditionMessage(e))
+    return(NULL)
+  })
+  
+  if (is.null(webpage)) return(data.frame(URL = url, Keyword = NA, TextSnippet = NA))
+  
+  main_text <- tryCatch({
+    html_text(webpage, trim = TRUE)
+  }, error = function(e) {
+    message("Error reading text from ", url, ": ", conditionMessage(e))
+    return("")
+  })
+
+  keywords <- c("Mandate", "Success basis", "Permanent recruitment", "Staff leasing", "Executive Search", "Headhunting", "Assessment", "Temporary")
+  
+  results <- lapply(keywords, function(kw) {
+    if (grepl(kw, main_text, ignore.case = TRUE)) {
+      snippets <- str_extract_all(main_text, regex(paste0("\\b.{0,30}", kw, ".{0,30}\\b"), ignore_case = TRUE))[[1]]
+      data.frame(URL = url, Keyword = kw, TextSnippet = snippets)
+    } else {
+      return(data.frame(URL = url, Keyword = kw, TextSnippet = NA))
+    }
+  }) %>% bind_rows()
+  
+  return(results)
+}
+```
+
+### Execution and Data Aggregation
+Set up a parallel cluster and execute the scraping process:
+```{r}
+cl <- makeCluster(detectCores() - 1)
+clusterEvalQ(cl, {
+  library(rvest)
+  library(dplyr)
+  library(purrr)
+  library(httr)
+  library(stringr)
+})
+clusterExport(cl, list("extract_text_recursively", "extract_base_url", "read_html", "html_text", "str_extract_all", "regex", "grepl", "Sys.sleep"))
+
+urls <- c(
+  "https://www.example.com",
+  "https://www.anotherexample.com"
+  # Add more URLs as needed
+)
+
+results <- parLapply(cl, urls, extract_text_recursively)
+stopCluster(cl)
+```
+
+### Save Results to Excel
+Process and save the results to an Excel file:
+```{r}
+results_df <- do.call(rbind, results)
+wb <- createWorkbook()
+addWorksheet(wb, "Results")
+writeData(wb, "Results", results_df)
+saveWorkbook(wb, "Keyword_Results.xlsx", overwrite = TRUE)
+message("The Excel file has been created and saved.")
+```
+
+### Conclusion
+This document demonstrates a robust method for scraping and analyzing web data. By leveraging R's capabilities, we can automate the collection and processing of vast amounts of information efficiently.
