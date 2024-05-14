@@ -1,5 +1,5 @@
 ---
-title: "Web Scraping and Data Extraction"
+title: "Capstone Project Web Scraping Headhunter URL"
 author: "Nico Joller"
 output:
   html_document: default
@@ -9,11 +9,17 @@ output:
 
 ## Introduction
 
-This document outlines the process of scraping websites to extract text and links using R. We utilize several packages (`rvest`, `dplyr`, `openxlsx`, `purrr`, `httr`, and `parallel`) to perform recursive scraping and data processing.
+This document shows the process of scraping websites from Swiss headhunter websites to extract text and links using R. I defined some keywords which I want to search for. I utilize several packages (`rvest`, `dplyr`, `openxlsx`, `purrr`, `httr`, and `parallel`) to perform recursive scraping and data processing.
 
 ## Methodology
 
 The script is designed to extract data from a predefined list of URLs. It searches for specific keywords within the text of each webpage and collects snippets of text surrounding these keywords.
+
+## Goal
+
+My Goal is to provide an overview which services (keywords) are provided by which headhunter company. So that the HR Recruiting Division can look for a service and 
+
+For the company I'm working for (a swiss accident insurance company) based on the predefined list of headhunter companies in Switzerland (which the company is currently working with) The list should contain the URL of the headhunter company and the keywords I defined. The keywords are: "Mandat", "Erfolgsbasis", "Festvermittlung", "Personalverleih", "Executive Search", "Headhunting", "Assessment", "Temporär".
 
 ### Packages
 
