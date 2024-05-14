@@ -52,7 +52,9 @@ server <- function(input, output, session) {
   data <- reactive({
     # Fehlerbehandlung hinzufügen
     tryCatch({
-      df <- read.xlsx("Keyword_Results.xlsx", sheet = 1) %>%
+      df <- read.xlsx("Keyword_Results.xlsx", sheet = 1)
+      print("Datei erfolgreich geladen")
+      df <- df %>%
         mutate(
           URL = as.character(URL),
           Keyword = as.character(Keyword),
@@ -61,6 +63,7 @@ server <- function(input, output, session) {
         ) %>%
         group_by(URL, Keyword) %>%
         summarise(Presence = any(Presence), Link = first(Link), .groups = 'drop')
+      print("Daten erfolgreich verarbeitet")
       return(df)
     }, error = function(e) {
       print(paste("Fehler beim Laden der Daten:", e))
@@ -72,6 +75,7 @@ server <- function(input, output, session) {
   observe({
     req(credentials()$user)  # Stellt sicher, dass ein Benutzer eingeloggt ist
     df <- data()
+    print("Daten für Dropdown geladen")
     url_choices <- unique(c("Alle", df$URL))
     keyword_choices <- unique(c("Alle", df$Keyword))
     updateSelectInput(session, "selectedUrl", choices = url_choices, selected = input$selectedUrl)
