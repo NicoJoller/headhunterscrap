@@ -1,0 +1,13 @@
+name: Capstone-PDL_Scrape
+title: Capstone-PDL_Scrape
+username: nicofrancesco
+account: nicofrancesco
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 12000440
+bundleId: 8614553
+url: https://nicofrancesco.shinyapps.io/Capstone-PDL_Scrape/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: .RData|Data/Data_RAW_URL/URL-List.R|Data/Output/Keyword_Analysis_Rekursiv.xlsx|Data/Output/Keyword_Analysis.xlsx|Final_Markdown.html|Final_Markdown.Rmd|Keyword_Results.xlsx|README.md|Script/Final_Script_For_Shiny.R|Script/PackagesforAuthShiny.R|Process_JunkFiles
