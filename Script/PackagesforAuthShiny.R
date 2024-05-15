@@ -1,10 +1,7 @@
-  
-# Installieren von shinyauthr  
+# Install shinyauthr
 
-# Installieren von devtools
+# Install devtools
 install.packages("devtools")
 
-# Mit devtools
+# Using devtools
 devtools::install_github("paulc91/shinyauthr")
-
-
