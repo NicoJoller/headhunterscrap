@@ -1,7 +1,7 @@
 ---
 title: "Capstone Project Web Scraping Headhunter URL"
 author: "Nico Joller"
-output:
+output: "Excel List and via Shiny Code a user friendly App Webpage"
   html_document: default
   word_document: default
   pdf_document: default
