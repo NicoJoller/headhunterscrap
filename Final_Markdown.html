@@ -12,7 +12,7 @@
 <meta name="author" content="Nico Joller" />
 
 
-<title>Web Scraping and Data Extraction</title>
+<title>Capstone Project Web Scraping Headhunter URL</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -349,7 +349,8 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">Web Scraping and Data Extraction</h1>
+<h1 class="title toc-ignore">Capstone Project Web Scraping Headhunter
+URL</h1>
 <h4 class="author">Nico Joller</h4>
 
 </div>
@@ -357,17 +358,33 @@ display: none;
 
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<p>This document outlines the process of scraping websites to extract
-text and links using R. We utilize several packages (<code>rvest</code>,
-<code>dplyr</code>, <code>openxlsx</code>, <code>purrr</code>,
-<code>httr</code>, and <code>parallel</code>) to perform recursive
-scraping and data processing.</p>
+<p>This document shows the process of scraping websites from Swiss
+headhunter websites to extract text and links using R. I defined some
+keywords which I want to search for. I utilize several packages
+(<code>rvest</code>, <code>dplyr</code>, <code>openxlsx</code>,
+<code>purrr</code>, <code>httr</code>, and <code>parallel</code>) to
+perform recursive scraping and data processing.</p>
 </div>
 <div id="methodology" class="section level2">
 <h2>Methodology</h2>
 <p>The script is designed to extract data from a predefined list of
 URLs. It searches for specific keywords within the text of each webpage
 and collects snippets of text surrounding these keywords.</p>
+</div>
+<div id="goal" class="section level2">
+<h2>Goal</h2>
+<p>My Goal is to provide an overview which services (keywords) are
+provided by which headhunter company. So that the HR Recruiting Division
+can look for a service and look for a company.</p>
+<p>I’m working for a swiss accident insurance company and wrote the code
+based on a predefined list of headhunter companies in Switzerland (which
+the company is currently working with). The result (as a xlsx List)
+should contain the URL of the headhunter company and if the keywords I
+defined where found or not. The keywords are: “Mandat”, “Erfolgsbasis”,
+“Festvermittlung”, “Personalverleih”, “Executive Search”, “Headhunting”,
+“Assessment”, “Temporär”. The second thing I did is that I created a
+shiny webapp to visualize the data, work with it and download the
+results.</p>
 <div id="packages" class="section level3">
 <h3>Packages</h3>
 <p>Load necessary libraries:</p>

@@ -1,7 +1,7 @@
 ---
 title: "Capstone Project Web Scraping Headhunter URL"
 author: "Nico Joller"
-output: "Excel List and via Shiny Code a user friendly App Webpage"
+output:
   html_document: default
   word_document: default
   pdf_document: default
@@ -17,9 +17,11 @@ The script is designed to extract data from a predefined list of URLs. It search
 
 ## Goal
 
-My Goal is to provide an overview which services (keywords) are provided by which headhunter company. So that the HR Recruiting Division can look for a service and 
+My Goal is to provide an overview which services (keywords) are provided by which headhunter company. So that the HR Recruiting Division can look for a service and look for a company.
 
-For the company I'm working for (a swiss accident insurance company) based on the predefined list of headhunter companies in Switzerland (which the company is currently working with) The list should contain the URL of the headhunter company and the keywords I defined. The keywords are: "Mandat", "Erfolgsbasis", "Festvermittlung", "Personalverleih", "Executive Search", "Headhunting", "Assessment", "Temporär".
+I'm working for a swiss accident insurance company and wrote the code based on a predefined list of headhunter companies in Switzerland (which the company is currently working with). 
+The result (as a xlsx List) should contain the URL of the headhunter company and if the keywords I defined where found or not. The keywords are: "Mandat", "Erfolgsbasis", "Festvermittlung", "Personalverleih", "Executive Search", "Headhunting", "Assessment", "Temporär".
+The second thing I did is that I created a shiny webapp to visualize the data, work with it and download the results.
 
 ### Packages
 
